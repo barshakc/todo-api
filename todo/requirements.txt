@@ -1,4 +1,0 @@
-django==5.0.1
-djangorestframework==3.14.0
-black==23.12.1
-isort==5.13.2
