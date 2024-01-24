@@ -17,7 +17,6 @@ class ToDo(TimeStampedModel):
     description=models.TextField()
     due_date=models.DateField()
     status=models.CharField(max_length=255,choices=STATUS_CHOICES)
-    completion_date=models.DateField()
 
     def __str__(self):
         return self.title
