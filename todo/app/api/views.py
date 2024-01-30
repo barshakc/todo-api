@@ -28,6 +28,7 @@ class UserRegistration(APIView):
 
 
 class UserLoginView(ObtainAuthToken):
+
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
@@ -41,15 +42,18 @@ class UserLoginView(ObtainAuthToken):
 class ToDoAPIListView(ListAPIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
-    queryset=ToDo.objects.all()
     serializer_class=ToDoSerializer
 
+    def get_queryset(self):
+        return ToDo.objects.filter(user=self.request.user)
+    
     def get(self, request, *args, **kwargs):
-       todos = self.queryset.all()
+       todos = self.get_queryset()  #this will allow only the login users to create their own list
        serializer = self.serializer_class(todos, many=True)
        return Response(serializer.data)
 
     def post(self,request,*args,**kwargs):
+      request.data['user'] = request.user.id  # Add the user information to the request data
       serializer = self.serializer_class(data=request.data)
       if serializer.is_valid():
         serializer.save()
@@ -58,6 +62,8 @@ class ToDoAPIListView(ListAPIView):
     
 
 class ToDoAPIDetailView(APIView):
+  authentication_classes = [TokenAuthentication]
+  permission_classes = [IsAuthenticated]
   queryset=ToDo.objects.all()
   serializer_class=ToDoSerializer
   

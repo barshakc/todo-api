@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -10,12 +10,14 @@ class TimeStampedModel(models.Model):
 
 
 class ToDo(TimeStampedModel):
+   
     STATUS_CHOICES = [
         ('todo', 'To do'),
         ('in_progress', 'In progress'),
         ('completed', 'Completed'),
     ]
 
+    user = models.ForeignKey(User, on_delete=models.CASCADE,null=True,blank=True)
     title=models.CharField(max_length=255)
     description=models.TextField()
     due_date=models.DateField()
