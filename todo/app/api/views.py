@@ -64,16 +64,16 @@ class ToDoAPIListView(ListAPIView):
 class ToDoAPIDetailView(APIView):
   authentication_classes = [TokenAuthentication]
   permission_classes = [IsAuthenticated]
-  queryset=ToDo.objects.all()
   serializer_class=ToDoSerializer
+  queryset = ToDo.objects.all()
   
   def get(self,request,*args,**kwargs):
-      todo = ToDo.objects.get(pk=kwargs['pk'])
+      todo = get_object_or_404(self.queryset, pk=kwargs['pk'], user=request.user)
       serializer = ToDoSerializer(todo)
       return Response(serializer.data)
    
   def put(self, request, *args, **kwargs):
-      instance = self.queryset.get(pk=kwargs['pk'])
+      instance = get_object_or_404(self.queryset, pk=kwargs['pk'], user=request.user)
       serializer = self.serializer_class(instance, data=request.data)
       if serializer.is_valid():
           serializer.save()
@@ -81,7 +81,7 @@ class ToDoAPIDetailView(APIView):
       return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
   def patch(self, request, *args, **kwargs):
-      instance = self.queryset.get(pk=kwargs['pk'])
+      instance = get_object_or_404(self.queryset, pk=kwargs['pk'], user=request.user)
       serializer = self.serializer_class(instance, data=request.data, partial=True)
       if serializer.is_valid():
           serializer.save()
@@ -89,6 +89,6 @@ class ToDoAPIDetailView(APIView):
       return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
   
   def delete(self,request,*args,**kwargs):
-     instance = get_object_or_404(self.queryset, pk=kwargs['pk'])
+     instance = get_object_or_404(self.queryset, pk=kwargs['pk'],user=request.user)
      instance.delete()
      return Response({'message': 'Object deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
