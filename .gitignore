@@ -1,0 +1,30 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Local development settings
+local_settings.py
+
+# Database
+db.sqlite3
+*.sql
+
+# Ignore venv directory
+venv/
+
+# Ignore Django migrations
+**/migrations/
+
+# Ignore log files
+*.log
+
+# Ignore database configuration
+*.db
+
+# Ignore secret key
+*.secret_key
+
+# Ignore environment configuration
+.env
