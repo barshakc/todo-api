@@ -7,7 +7,7 @@ from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
-from app.models import ToDo
+from todoapp.models import ToDo
 from .serializers import ToDoSerializer, UserSerializer
 from django.contrib.auth.models import User
 
