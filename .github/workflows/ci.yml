@@ -28,5 +28,6 @@ jobs:
 
       - name: Run Django migrations and tests
         run: |
+            cd $GITHUB_WORKSPACE
             python manage.py migrate
             python manage.py test
